@@ -1,0 +1,49 @@
+# Here you can define all your data sets by using simple YAML syntax.
+#
+# Documentation for this file format can be found in "The Data Catalog"
+# Link: https://kedro.readthedocs.io/en/stable/04_user_guide/04_data_catalog.html
+
+companies:
+  type: pandas.CSVDataSet
+  filepath: s3://kedro-spaceflight-test-001/companies.csv
+
+reviews:
+  type: pandas.CSVDataSet
+  filepath: s3://kedro-spaceflight-test-001/reviews.csv
+
+shuttles:
+  type: pandas.ExcelDataSet
+  filepath: s3://kedro-spaceflight-test-001/shuttles.xlsx
+
+preprocessed_companies:
+  type: pandas.CSVDataSet
+  filepath: s3://kedro-spaceflight-test-001/preprocessed_companies.csv
+
+preprocessed_shuttles:
+  type: pandas.CSVDataSet
+  filepath: s3://kedro-spaceflight-test-001/preprocessed_shuttles.csv
+
+model_input_table:
+  type: pandas.CSVDataSet
+  filepath: s3://kedro-spaceflight-test-001/model_input_table.csv
+
+regressor:
+  type: pickle.PickleDataSet
+  filepath: s3://kedro-spaceflight-test-001/regressor.pickle
+  versioned: true
+
+X_train:
+  type: pickle.PickleDataSet
+  filepath: s3://kedro-spaceflight-test-001/X_train.pickle
+
+X_test:
+  type: pickle.PickleDataSet
+  filepath: s3://kedro-spaceflight-test-001/X_test.pickle
+
+y_train:
+  type: pickle.PickleDataSet
+  filepath: s3://kedro-spaceflight-test-001/y_train.pickle
+
+y_test:
+  type: pickle.PickleDataSet
+  filepath: s3://kedro-spaceflight-test-001/y_test.pickle
