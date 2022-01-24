@@ -1,35 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-# Copyright 2020 QuantumBlack Visual Analytics Limited
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-# EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-# OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND
-# NONINFRINGEMENT. IN NO EVENT WILL THE LICENSOR OR OTHER CONTRIBUTORS
-# BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY, WHETHER IN AN
-# ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF, OR IN
-# CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-#
-# The QuantumBlack Visual Analytics Limited ("QuantumBlack") name and logo
-# (either separately or in combination, "QuantumBlack Trademarks") are
-# trademarks of QuantumBlack. The License does not grant you any right or
-# license to the QuantumBlack Trademarks. You may not use the QuantumBlack
-# Trademarks or any confusingly similar mark as a trademark for your product,
-# or use the QuantumBlack Trademarks in any other manner that might cause
-# confusion in the marketplace, including but not limited to in advertising,
-# on websites, or on software.
-#
-# See the License for the specific language governing permissions and
-# limitations under the License.
 
-# kedro_tutorial documentation build
+# spaceflights_steps_function documentation build
 # configuration file, created by sphinx-quickstart.
 #
 # This file is execfile()d with the current directory set to its
@@ -49,13 +22,11 @@ import re
 
 from kedro.framework.cli.utils import find_stylesheets
 from recommonmark.transform import AutoStructify
-
-from kedro_tutorial import __version__ as release
+from spaceflights_steps_function import __version__ as release
 
 # -- Project information -----------------------------------------------------
 
-project = "kedro_tutorial"
-copyright = "2020, QuantumBlack Visual Analytics Limited"
+project = "spaceflights_steps_function"
 author = "QuantumBlack"
 
 # The short X.Y version.
@@ -146,10 +117,13 @@ html_static_path = ["_static"]
 
 html_show_sourcelink = False
 
+# Removes, from all docs, the copyright footer.
+html_show_copyright = False
+
 # -- Options for HTMLHelp output ---------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = "kedro_tutorialdoc"
+htmlhelp_basename = "spaceflights_steps_functiondoc"
 
 # -- Options for LaTeX output ------------------------------------------------
 
@@ -177,8 +151,8 @@ latex_elements = {
 latex_documents = [
     (
         master_doc,
-        "kedro_tutorial.tex",
-        "kedro_tutorial Documentation",
+        "spaceflights_steps_function.tex",
+        "spaceflights_steps_function Documentation",
         "QuantumBlack",
         "manual",
     )
@@ -191,8 +165,8 @@ latex_documents = [
 man_pages = [
     (
         master_doc,
-        "kedro_tutorial",
-        "kedro_tutorial Documentation",
+        "spaceflights_steps_function",
+        "spaceflights_steps_function Documentation",
         [author],
         1,
     )
@@ -206,11 +180,11 @@ man_pages = [
 texinfo_documents = [
     (
         master_doc,
-        "kedro_tutorial",
-        "kedro_tutorial Documentation",
+        "spaceflights_steps_function",
+        "spaceflights_steps_function Documentation",
         author,
-        "kedro_tutorial",
-        "Project kedro_tutorial codebase.",
+        "spaceflights_steps_function",
+        "Project spaceflights_steps_function codebase.",
         "Data-Science",
     )
 ]
@@ -251,7 +225,7 @@ def setup(app):
     app.connect("autodoc-skip-member", skip)
     # add Kedro stylesheets
     for stylesheet in find_stylesheets():
-        app.add_stylesheet(stylesheet)
+        app.add_css_file(stylesheet)
     # enable rendering RST tables in Markdown
     app.add_config_value("recommonmark_config", {"enable_eval_rst": True}, True)
     app.add_transform(AutoStructify)

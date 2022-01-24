@@ -1,0 +1,1473 @@
+{
+  "version": "tree-0.1",
+  "tree": {
+    "id": "App",
+    "path": "",
+    "children": {
+      "Tree": {
+        "id": "Tree",
+        "path": "Tree",
+        "constructInfo": {
+          "fqn": "@aws-cdk/core.Construct",
+          "version": "1.140.0"
+        }
+      },
+      "KedroStepFunctionsStack": {
+        "id": "KedroStepFunctionsStack",
+        "path": "KedroStepFunctionsStack",
+        "children": {
+          "ECR": {
+            "id": "ECR",
+            "path": "KedroStepFunctionsStack/ECR",
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-ecr.RepositoryBase",
+              "version": "1.140.0"
+            }
+          },
+          "RawDataBucket": {
+            "id": "RawDataBucket",
+            "path": "KedroStepFunctionsStack/RawDataBucket",
+            "children": {
+              "Notifications": {
+                "id": "Notifications",
+                "path": "KedroStepFunctionsStack/RawDataBucket/Notifications",
+                "constructInfo": {
+                  "fqn": "@aws-cdk/core.Construct",
+                  "version": "1.140.0"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "KedroStepFunctionsStack/RawDataBucket/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::S3::Bucket",
+                  "aws:cdk:cloudformation:props": {
+                    "bucketName": "spaceflights-step-functions"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-s3.CfnBucket",
+                  "version": "1.140.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-s3.Bucket",
+              "version": "1.140.0"
+            }
+          },
+          "Start": {
+            "id": "Start",
+            "path": "KedroStepFunctionsStack/Start",
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-stepfunctions.Pass",
+              "version": "1.140.0"
+            }
+          },
+          "Group 1": {
+            "id": "Group 1",
+            "path": "KedroStepFunctionsStack/Group 1",
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-stepfunctions.Parallel",
+              "version": "1.140.0"
+            }
+          },
+          "preprocess-shuttles-node-fn": {
+            "id": "preprocess-shuttles-node-fn",
+            "path": "KedroStepFunctionsStack/preprocess-shuttles-node-fn",
+            "children": {
+              "ServiceRole": {
+                "id": "ServiceRole",
+                "path": "KedroStepFunctionsStack/preprocess-shuttles-node-fn/ServiceRole",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "KedroStepFunctionsStack/preprocess-shuttles-node-fn/ServiceRole/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "lambda.amazonaws.com"
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "managedPolicyArns": [
+                          {
+                            "Fn::Join": [
+                              "",
+                              [
+                                "arn:",
+                                {
+                                  "Ref": "AWS::Partition"
+                                },
+                                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+                              ]
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-iam.CfnRole",
+                      "version": "1.140.0"
+                    }
+                  },
+                  "DefaultPolicy": {
+                    "id": "DefaultPolicy",
+                    "path": "KedroStepFunctionsStack/preprocess-shuttles-node-fn/ServiceRole/DefaultPolicy",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "KedroStepFunctionsStack/preprocess-shuttles-node-fn/ServiceRole/DefaultPolicy/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                          "aws:cdk:cloudformation:props": {
+                            "policyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": [
+                                    "s3:GetObject*",
+                                    "s3:GetBucket*",
+                                    "s3:List*",
+                                    "s3:DeleteObject*",
+                                    "s3:PutObject*",
+                                    "s3:Abort*"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::GetAtt": [
+                                        "RawDataBucket57F26C03",
+                                        "Arn"
+                                      ]
+                                    },
+                                    {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          {
+                                            "Fn::GetAtt": [
+                                              "RawDataBucket57F26C03",
+                                              "Arn"
+                                            ]
+                                          },
+                                          "/*"
+                                        ]
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            },
+                            "policyName": "preprocessshuttlesnodefnServiceRoleDefaultPolicy5C917868",
+                            "roles": [
+                              {
+                                "Ref": "preprocessshuttlesnodefnServiceRole33C9193F"
+                              }
+                            ]
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/aws-iam.CfnPolicy",
+                          "version": "1.140.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-iam.Policy",
+                      "version": "1.140.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-iam.Role",
+                  "version": "1.140.0"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "KedroStepFunctionsStack/preprocess-shuttles-node-fn/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
+                  "aws:cdk:cloudformation:props": {
+                    "code": {
+                      "imageUri": {
+                        "Fn::Join": [
+                          "",
+                          [
+                            {
+                              "Ref": "AWS::AccountId"
+                            },
+                            ".dkr.ecr.",
+                            {
+                              "Ref": "AWS::Region"
+                            },
+                            ".",
+                            {
+                              "Ref": "AWS::URLSuffix"
+                            },
+                            "/kedro-tutorial-17:latest"
+                          ]
+                        ]
+                      }
+                    },
+                    "role": {
+                      "Fn::GetAtt": [
+                        "preprocessshuttlesnodefnServiceRole33C9193F",
+                        "Arn"
+                      ]
+                    },
+                    "description": "preprocess_shuttles_node: preprocess_shuttles([shuttles]) -> [preprocessed_shuttles]",
+                    "functionName": "preprocess-shuttles-node",
+                    "memorySize": 256,
+                    "packageType": "Image",
+                    "reservedConcurrentExecutions": 10,
+                    "timeout": 900
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-lambda.CfnFunction",
+                  "version": "1.140.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-lambda.Function",
+              "version": "1.140.0"
+            }
+          },
+          "preprocess-shuttles-node": {
+            "id": "preprocess-shuttles-node",
+            "path": "KedroStepFunctionsStack/preprocess-shuttles-node",
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-stepfunctions-tasks.LambdaInvoke",
+              "version": "1.140.0"
+            }
+          },
+          "preprocess-companies-node-fn": {
+            "id": "preprocess-companies-node-fn",
+            "path": "KedroStepFunctionsStack/preprocess-companies-node-fn",
+            "children": {
+              "ServiceRole": {
+                "id": "ServiceRole",
+                "path": "KedroStepFunctionsStack/preprocess-companies-node-fn/ServiceRole",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "KedroStepFunctionsStack/preprocess-companies-node-fn/ServiceRole/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "lambda.amazonaws.com"
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "managedPolicyArns": [
+                          {
+                            "Fn::Join": [
+                              "",
+                              [
+                                "arn:",
+                                {
+                                  "Ref": "AWS::Partition"
+                                },
+                                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+                              ]
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-iam.CfnRole",
+                      "version": "1.140.0"
+                    }
+                  },
+                  "DefaultPolicy": {
+                    "id": "DefaultPolicy",
+                    "path": "KedroStepFunctionsStack/preprocess-companies-node-fn/ServiceRole/DefaultPolicy",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "KedroStepFunctionsStack/preprocess-companies-node-fn/ServiceRole/DefaultPolicy/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                          "aws:cdk:cloudformation:props": {
+                            "policyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": [
+                                    "s3:GetObject*",
+                                    "s3:GetBucket*",
+                                    "s3:List*",
+                                    "s3:DeleteObject*",
+                                    "s3:PutObject*",
+                                    "s3:Abort*"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::GetAtt": [
+                                        "RawDataBucket57F26C03",
+                                        "Arn"
+                                      ]
+                                    },
+                                    {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          {
+                                            "Fn::GetAtt": [
+                                              "RawDataBucket57F26C03",
+                                              "Arn"
+                                            ]
+                                          },
+                                          "/*"
+                                        ]
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            },
+                            "policyName": "preprocesscompaniesnodefnServiceRoleDefaultPolicyA5530AEE",
+                            "roles": [
+                              {
+                                "Ref": "preprocesscompaniesnodefnServiceRoleF7ADDDE5"
+                              }
+                            ]
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/aws-iam.CfnPolicy",
+                          "version": "1.140.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-iam.Policy",
+                      "version": "1.140.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-iam.Role",
+                  "version": "1.140.0"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "KedroStepFunctionsStack/preprocess-companies-node-fn/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
+                  "aws:cdk:cloudformation:props": {
+                    "code": {
+                      "imageUri": {
+                        "Fn::Join": [
+                          "",
+                          [
+                            {
+                              "Ref": "AWS::AccountId"
+                            },
+                            ".dkr.ecr.",
+                            {
+                              "Ref": "AWS::Region"
+                            },
+                            ".",
+                            {
+                              "Ref": "AWS::URLSuffix"
+                            },
+                            "/kedro-tutorial-17:latest"
+                          ]
+                        ]
+                      }
+                    },
+                    "role": {
+                      "Fn::GetAtt": [
+                        "preprocesscompaniesnodefnServiceRoleF7ADDDE5",
+                        "Arn"
+                      ]
+                    },
+                    "description": "preprocess_companies_node: preprocess_companies([companies]) -> [preprocessed_companies]",
+                    "functionName": "preprocess-companies-node",
+                    "memorySize": 256,
+                    "packageType": "Image",
+                    "reservedConcurrentExecutions": 10,
+                    "timeout": 900
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-lambda.CfnFunction",
+                  "version": "1.140.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-lambda.Function",
+              "version": "1.140.0"
+            }
+          },
+          "preprocess-companies-node": {
+            "id": "preprocess-companies-node",
+            "path": "KedroStepFunctionsStack/preprocess-companies-node",
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-stepfunctions-tasks.LambdaInvoke",
+              "version": "1.140.0"
+            }
+          },
+          "Group 2": {
+            "id": "Group 2",
+            "path": "KedroStepFunctionsStack/Group 2",
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-stepfunctions.Parallel",
+              "version": "1.140.0"
+            }
+          },
+          "create-model-input-table-node-fn": {
+            "id": "create-model-input-table-node-fn",
+            "path": "KedroStepFunctionsStack/create-model-input-table-node-fn",
+            "children": {
+              "ServiceRole": {
+                "id": "ServiceRole",
+                "path": "KedroStepFunctionsStack/create-model-input-table-node-fn/ServiceRole",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "KedroStepFunctionsStack/create-model-input-table-node-fn/ServiceRole/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "lambda.amazonaws.com"
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "managedPolicyArns": [
+                          {
+                            "Fn::Join": [
+                              "",
+                              [
+                                "arn:",
+                                {
+                                  "Ref": "AWS::Partition"
+                                },
+                                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+                              ]
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-iam.CfnRole",
+                      "version": "1.140.0"
+                    }
+                  },
+                  "DefaultPolicy": {
+                    "id": "DefaultPolicy",
+                    "path": "KedroStepFunctionsStack/create-model-input-table-node-fn/ServiceRole/DefaultPolicy",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "KedroStepFunctionsStack/create-model-input-table-node-fn/ServiceRole/DefaultPolicy/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                          "aws:cdk:cloudformation:props": {
+                            "policyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": [
+                                    "s3:GetObject*",
+                                    "s3:GetBucket*",
+                                    "s3:List*",
+                                    "s3:DeleteObject*",
+                                    "s3:PutObject*",
+                                    "s3:Abort*"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::GetAtt": [
+                                        "RawDataBucket57F26C03",
+                                        "Arn"
+                                      ]
+                                    },
+                                    {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          {
+                                            "Fn::GetAtt": [
+                                              "RawDataBucket57F26C03",
+                                              "Arn"
+                                            ]
+                                          },
+                                          "/*"
+                                        ]
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            },
+                            "policyName": "createmodelinputtablenodefnServiceRoleDefaultPolicy631013DF",
+                            "roles": [
+                              {
+                                "Ref": "createmodelinputtablenodefnServiceRoleC7BE52BF"
+                              }
+                            ]
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/aws-iam.CfnPolicy",
+                          "version": "1.140.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-iam.Policy",
+                      "version": "1.140.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-iam.Role",
+                  "version": "1.140.0"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "KedroStepFunctionsStack/create-model-input-table-node-fn/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
+                  "aws:cdk:cloudformation:props": {
+                    "code": {
+                      "imageUri": {
+                        "Fn::Join": [
+                          "",
+                          [
+                            {
+                              "Ref": "AWS::AccountId"
+                            },
+                            ".dkr.ecr.",
+                            {
+                              "Ref": "AWS::Region"
+                            },
+                            ".",
+                            {
+                              "Ref": "AWS::URLSuffix"
+                            },
+                            "/kedro-tutorial-17:latest"
+                          ]
+                        ]
+                      }
+                    },
+                    "role": {
+                      "Fn::GetAtt": [
+                        "createmodelinputtablenodefnServiceRoleC7BE52BF",
+                        "Arn"
+                      ]
+                    },
+                    "description": "create_model_input_table_node: create_model_input_table([preprocessed_shuttles,preprocessed_companies,reviews]) -> [model_input_table]",
+                    "functionName": "create-model-input-table-node",
+                    "memorySize": 256,
+                    "packageType": "Image",
+                    "reservedConcurrentExecutions": 10,
+                    "timeout": 900
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-lambda.CfnFunction",
+                  "version": "1.140.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-lambda.Function",
+              "version": "1.140.0"
+            }
+          },
+          "create-model-input-table-node": {
+            "id": "create-model-input-table-node",
+            "path": "KedroStepFunctionsStack/create-model-input-table-node",
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-stepfunctions-tasks.LambdaInvoke",
+              "version": "1.140.0"
+            }
+          },
+          "Group 3": {
+            "id": "Group 3",
+            "path": "KedroStepFunctionsStack/Group 3",
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-stepfunctions.Parallel",
+              "version": "1.140.0"
+            }
+          },
+          "split-data-node-fn": {
+            "id": "split-data-node-fn",
+            "path": "KedroStepFunctionsStack/split-data-node-fn",
+            "children": {
+              "ServiceRole": {
+                "id": "ServiceRole",
+                "path": "KedroStepFunctionsStack/split-data-node-fn/ServiceRole",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "KedroStepFunctionsStack/split-data-node-fn/ServiceRole/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "lambda.amazonaws.com"
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "managedPolicyArns": [
+                          {
+                            "Fn::Join": [
+                              "",
+                              [
+                                "arn:",
+                                {
+                                  "Ref": "AWS::Partition"
+                                },
+                                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+                              ]
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-iam.CfnRole",
+                      "version": "1.140.0"
+                    }
+                  },
+                  "DefaultPolicy": {
+                    "id": "DefaultPolicy",
+                    "path": "KedroStepFunctionsStack/split-data-node-fn/ServiceRole/DefaultPolicy",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "KedroStepFunctionsStack/split-data-node-fn/ServiceRole/DefaultPolicy/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                          "aws:cdk:cloudformation:props": {
+                            "policyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": [
+                                    "s3:GetObject*",
+                                    "s3:GetBucket*",
+                                    "s3:List*",
+                                    "s3:DeleteObject*",
+                                    "s3:PutObject*",
+                                    "s3:Abort*"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::GetAtt": [
+                                        "RawDataBucket57F26C03",
+                                        "Arn"
+                                      ]
+                                    },
+                                    {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          {
+                                            "Fn::GetAtt": [
+                                              "RawDataBucket57F26C03",
+                                              "Arn"
+                                            ]
+                                          },
+                                          "/*"
+                                        ]
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            },
+                            "policyName": "splitdatanodefnServiceRoleDefaultPolicy1B1FCD08",
+                            "roles": [
+                              {
+                                "Ref": "splitdatanodefnServiceRoleCEE4885A"
+                              }
+                            ]
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/aws-iam.CfnPolicy",
+                          "version": "1.140.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-iam.Policy",
+                      "version": "1.140.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-iam.Role",
+                  "version": "1.140.0"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "KedroStepFunctionsStack/split-data-node-fn/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
+                  "aws:cdk:cloudformation:props": {
+                    "code": {
+                      "imageUri": {
+                        "Fn::Join": [
+                          "",
+                          [
+                            {
+                              "Ref": "AWS::AccountId"
+                            },
+                            ".dkr.ecr.",
+                            {
+                              "Ref": "AWS::Region"
+                            },
+                            ".",
+                            {
+                              "Ref": "AWS::URLSuffix"
+                            },
+                            "/kedro-tutorial-17:latest"
+                          ]
+                        ]
+                      }
+                    },
+                    "role": {
+                      "Fn::GetAtt": [
+                        "splitdatanodefnServiceRoleCEE4885A",
+                        "Arn"
+                      ]
+                    },
+                    "description": "split_data_node: split_data([model_input_table,parameters]) -> [X_train,X_test,y_train,y_test]",
+                    "functionName": "split-data-node",
+                    "memorySize": 256,
+                    "packageType": "Image",
+                    "reservedConcurrentExecutions": 10,
+                    "timeout": 900
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-lambda.CfnFunction",
+                  "version": "1.140.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-lambda.Function",
+              "version": "1.140.0"
+            }
+          },
+          "split-data-node": {
+            "id": "split-data-node",
+            "path": "KedroStepFunctionsStack/split-data-node",
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-stepfunctions-tasks.LambdaInvoke",
+              "version": "1.140.0"
+            }
+          },
+          "Group 4": {
+            "id": "Group 4",
+            "path": "KedroStepFunctionsStack/Group 4",
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-stepfunctions.Parallel",
+              "version": "1.140.0"
+            }
+          },
+          "train-model-node-fn": {
+            "id": "train-model-node-fn",
+            "path": "KedroStepFunctionsStack/train-model-node-fn",
+            "children": {
+              "ServiceRole": {
+                "id": "ServiceRole",
+                "path": "KedroStepFunctionsStack/train-model-node-fn/ServiceRole",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "KedroStepFunctionsStack/train-model-node-fn/ServiceRole/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "lambda.amazonaws.com"
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "managedPolicyArns": [
+                          {
+                            "Fn::Join": [
+                              "",
+                              [
+                                "arn:",
+                                {
+                                  "Ref": "AWS::Partition"
+                                },
+                                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+                              ]
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-iam.CfnRole",
+                      "version": "1.140.0"
+                    }
+                  },
+                  "DefaultPolicy": {
+                    "id": "DefaultPolicy",
+                    "path": "KedroStepFunctionsStack/train-model-node-fn/ServiceRole/DefaultPolicy",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "KedroStepFunctionsStack/train-model-node-fn/ServiceRole/DefaultPolicy/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                          "aws:cdk:cloudformation:props": {
+                            "policyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": [
+                                    "s3:GetObject*",
+                                    "s3:GetBucket*",
+                                    "s3:List*",
+                                    "s3:DeleteObject*",
+                                    "s3:PutObject*",
+                                    "s3:Abort*"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::GetAtt": [
+                                        "RawDataBucket57F26C03",
+                                        "Arn"
+                                      ]
+                                    },
+                                    {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          {
+                                            "Fn::GetAtt": [
+                                              "RawDataBucket57F26C03",
+                                              "Arn"
+                                            ]
+                                          },
+                                          "/*"
+                                        ]
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            },
+                            "policyName": "trainmodelnodefnServiceRoleDefaultPolicyF5D476F5",
+                            "roles": [
+                              {
+                                "Ref": "trainmodelnodefnServiceRole5DC8CFD4"
+                              }
+                            ]
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/aws-iam.CfnPolicy",
+                          "version": "1.140.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-iam.Policy",
+                      "version": "1.140.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-iam.Role",
+                  "version": "1.140.0"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "KedroStepFunctionsStack/train-model-node-fn/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
+                  "aws:cdk:cloudformation:props": {
+                    "code": {
+                      "imageUri": {
+                        "Fn::Join": [
+                          "",
+                          [
+                            {
+                              "Ref": "AWS::AccountId"
+                            },
+                            ".dkr.ecr.",
+                            {
+                              "Ref": "AWS::Region"
+                            },
+                            ".",
+                            {
+                              "Ref": "AWS::URLSuffix"
+                            },
+                            "/kedro-tutorial-17:latest"
+                          ]
+                        ]
+                      }
+                    },
+                    "role": {
+                      "Fn::GetAtt": [
+                        "trainmodelnodefnServiceRole5DC8CFD4",
+                        "Arn"
+                      ]
+                    },
+                    "description": "train_model_node: train_model([X_train,y_train]) -> [regressor]",
+                    "functionName": "train-model-node",
+                    "memorySize": 256,
+                    "packageType": "Image",
+                    "reservedConcurrentExecutions": 10,
+                    "timeout": 900
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-lambda.CfnFunction",
+                  "version": "1.140.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-lambda.Function",
+              "version": "1.140.0"
+            }
+          },
+          "train-model-node": {
+            "id": "train-model-node",
+            "path": "KedroStepFunctionsStack/train-model-node",
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-stepfunctions-tasks.LambdaInvoke",
+              "version": "1.140.0"
+            }
+          },
+          "Group 5": {
+            "id": "Group 5",
+            "path": "KedroStepFunctionsStack/Group 5",
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-stepfunctions.Parallel",
+              "version": "1.140.0"
+            }
+          },
+          "evaluate-model-node-fn": {
+            "id": "evaluate-model-node-fn",
+            "path": "KedroStepFunctionsStack/evaluate-model-node-fn",
+            "children": {
+              "ServiceRole": {
+                "id": "ServiceRole",
+                "path": "KedroStepFunctionsStack/evaluate-model-node-fn/ServiceRole",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "KedroStepFunctionsStack/evaluate-model-node-fn/ServiceRole/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "lambda.amazonaws.com"
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "managedPolicyArns": [
+                          {
+                            "Fn::Join": [
+                              "",
+                              [
+                                "arn:",
+                                {
+                                  "Ref": "AWS::Partition"
+                                },
+                                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+                              ]
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-iam.CfnRole",
+                      "version": "1.140.0"
+                    }
+                  },
+                  "DefaultPolicy": {
+                    "id": "DefaultPolicy",
+                    "path": "KedroStepFunctionsStack/evaluate-model-node-fn/ServiceRole/DefaultPolicy",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "KedroStepFunctionsStack/evaluate-model-node-fn/ServiceRole/DefaultPolicy/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                          "aws:cdk:cloudformation:props": {
+                            "policyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": [
+                                    "s3:GetObject*",
+                                    "s3:GetBucket*",
+                                    "s3:List*",
+                                    "s3:DeleteObject*",
+                                    "s3:PutObject*",
+                                    "s3:Abort*"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::GetAtt": [
+                                        "RawDataBucket57F26C03",
+                                        "Arn"
+                                      ]
+                                    },
+                                    {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          {
+                                            "Fn::GetAtt": [
+                                              "RawDataBucket57F26C03",
+                                              "Arn"
+                                            ]
+                                          },
+                                          "/*"
+                                        ]
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            },
+                            "policyName": "evaluatemodelnodefnServiceRoleDefaultPolicy7E151D2D",
+                            "roles": [
+                              {
+                                "Ref": "evaluatemodelnodefnServiceRoleD44DD9B4"
+                              }
+                            ]
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/aws-iam.CfnPolicy",
+                          "version": "1.140.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-iam.Policy",
+                      "version": "1.140.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-iam.Role",
+                  "version": "1.140.0"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "KedroStepFunctionsStack/evaluate-model-node-fn/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
+                  "aws:cdk:cloudformation:props": {
+                    "code": {
+                      "imageUri": {
+                        "Fn::Join": [
+                          "",
+                          [
+                            {
+                              "Ref": "AWS::AccountId"
+                            },
+                            ".dkr.ecr.",
+                            {
+                              "Ref": "AWS::Region"
+                            },
+                            ".",
+                            {
+                              "Ref": "AWS::URLSuffix"
+                            },
+                            "/kedro-tutorial-17:latest"
+                          ]
+                        ]
+                      }
+                    },
+                    "role": {
+                      "Fn::GetAtt": [
+                        "evaluatemodelnodefnServiceRoleD44DD9B4",
+                        "Arn"
+                      ]
+                    },
+                    "description": "evaluate_model_node: evaluate_model([regressor,X_test,y_test]) -> None",
+                    "functionName": "evaluate-model-node",
+                    "memorySize": 256,
+                    "packageType": "Image",
+                    "reservedConcurrentExecutions": 10,
+                    "timeout": 900
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-lambda.CfnFunction",
+                  "version": "1.140.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-lambda.Function",
+              "version": "1.140.0"
+            }
+          },
+          "evaluate-model-node": {
+            "id": "evaluate-model-node",
+            "path": "KedroStepFunctionsStack/evaluate-model-node",
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-stepfunctions-tasks.LambdaInvoke",
+              "version": "1.140.0"
+            }
+          },
+          "Kedro Tutorial": {
+            "id": "Kedro Tutorial",
+            "path": "KedroStepFunctionsStack/Kedro Tutorial",
+            "children": {
+              "Role": {
+                "id": "Role",
+                "path": "KedroStepFunctionsStack/Kedro Tutorial/Role",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "KedroStepFunctionsStack/Kedro Tutorial/Role/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": {
+                                  "Fn::FindInMap": [
+                                    "ServiceprincipalMap",
+                                    {
+                                      "Ref": "AWS::Region"
+                                    },
+                                    "states"
+                                  ]
+                                }
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-iam.CfnRole",
+                      "version": "1.140.0"
+                    }
+                  },
+                  "DefaultPolicy": {
+                    "id": "DefaultPolicy",
+                    "path": "KedroStepFunctionsStack/Kedro Tutorial/Role/DefaultPolicy",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "KedroStepFunctionsStack/Kedro Tutorial/Role/DefaultPolicy/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                          "aws:cdk:cloudformation:props": {
+                            "policyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": "lambda:InvokeFunction",
+                                  "Effect": "Allow",
+                                  "Resource": {
+                                    "Fn::GetAtt": [
+                                      "evaluatemodelnodefn814A2826",
+                                      "Arn"
+                                    ]
+                                  }
+                                },
+                                {
+                                  "Action": "lambda:InvokeFunction",
+                                  "Effect": "Allow",
+                                  "Resource": {
+                                    "Fn::GetAtt": [
+                                      "trainmodelnodefnDD014D33",
+                                      "Arn"
+                                    ]
+                                  }
+                                },
+                                {
+                                  "Action": "lambda:InvokeFunction",
+                                  "Effect": "Allow",
+                                  "Resource": {
+                                    "Fn::GetAtt": [
+                                      "splitdatanodefn72E68B0B",
+                                      "Arn"
+                                    ]
+                                  }
+                                },
+                                {
+                                  "Action": "lambda:InvokeFunction",
+                                  "Effect": "Allow",
+                                  "Resource": {
+                                    "Fn::GetAtt": [
+                                      "createmodelinputtablenodefnA305B4C1",
+                                      "Arn"
+                                    ]
+                                  }
+                                },
+                                {
+                                  "Action": "lambda:InvokeFunction",
+                                  "Effect": "Allow",
+                                  "Resource": {
+                                    "Fn::GetAtt": [
+                                      "preprocessshuttlesnodefn33B2C627",
+                                      "Arn"
+                                    ]
+                                  }
+                                },
+                                {
+                                  "Action": "lambda:InvokeFunction",
+                                  "Effect": "Allow",
+                                  "Resource": {
+                                    "Fn::GetAtt": [
+                                      "preprocesscompaniesnodefn6AA50645",
+                                      "Arn"
+                                    ]
+                                  }
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            },
+                            "policyName": "KedroTutorialRoleDefaultPolicyF77E1D25",
+                            "roles": [
+                              {
+                                "Ref": "KedroTutorialRoleB2DB57D4"
+                              }
+                            ]
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/aws-iam.CfnPolicy",
+                          "version": "1.140.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-iam.Policy",
+                      "version": "1.140.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-iam.Role",
+                  "version": "1.140.0"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "KedroStepFunctionsStack/Kedro Tutorial/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::StepFunctions::StateMachine",
+                  "aws:cdk:cloudformation:props": {
+                    "roleArn": {
+                      "Fn::GetAtt": [
+                        "KedroTutorialRoleB2DB57D4",
+                        "Arn"
+                      ]
+                    },
+                    "definitionString": {
+                      "Fn::Join": [
+                        "",
+                        [
+                          "{\"StartAt\":\"Start\",\"States\":{\"Start\":{\"Type\":\"Pass\",\"Next\":\"Group 1\"},\"Group 1\":{\"Type\":\"Parallel\",\"Next\":\"Group 2\",\"Branches\":[{\"StartAt\":\"preprocess-shuttles-node\",\"States\":{\"preprocess-shuttles-node\":{\"End\":true,\"Retry\":[{\"ErrorEquals\":[\"Lambda.ServiceException\",\"Lambda.AWSLambdaException\",\"Lambda.SdkClientException\"],\"IntervalSeconds\":2,\"MaxAttempts\":6,\"BackoffRate\":2}],\"Type\":\"Task\",\"Resource\":\"arn:",
+                          {
+                            "Ref": "AWS::Partition"
+                          },
+                          ":states:::lambda:invoke\",\"Parameters\":{\"FunctionName\":\"",
+                          {
+                            "Fn::GetAtt": [
+                              "preprocessshuttlesnodefn33B2C627",
+                              "Arn"
+                            ]
+                          },
+                          "\",\"Payload\":{\"node_name\":\"preprocess_shuttles_node\"}}}}},{\"StartAt\":\"preprocess-companies-node\",\"States\":{\"preprocess-companies-node\":{\"End\":true,\"Retry\":[{\"ErrorEquals\":[\"Lambda.ServiceException\",\"Lambda.AWSLambdaException\",\"Lambda.SdkClientException\"],\"IntervalSeconds\":2,\"MaxAttempts\":6,\"BackoffRate\":2}],\"Type\":\"Task\",\"Resource\":\"arn:",
+                          {
+                            "Ref": "AWS::Partition"
+                          },
+                          ":states:::lambda:invoke\",\"Parameters\":{\"FunctionName\":\"",
+                          {
+                            "Fn::GetAtt": [
+                              "preprocesscompaniesnodefn6AA50645",
+                              "Arn"
+                            ]
+                          },
+                          "\",\"Payload\":{\"node_name\":\"preprocess_companies_node\"}}}}}]},\"Group 2\":{\"Type\":\"Parallel\",\"Next\":\"Group 3\",\"Branches\":[{\"StartAt\":\"create-model-input-table-node\",\"States\":{\"create-model-input-table-node\":{\"End\":true,\"Retry\":[{\"ErrorEquals\":[\"Lambda.ServiceException\",\"Lambda.AWSLambdaException\",\"Lambda.SdkClientException\"],\"IntervalSeconds\":2,\"MaxAttempts\":6,\"BackoffRate\":2}],\"Type\":\"Task\",\"Resource\":\"arn:",
+                          {
+                            "Ref": "AWS::Partition"
+                          },
+                          ":states:::lambda:invoke\",\"Parameters\":{\"FunctionName\":\"",
+                          {
+                            "Fn::GetAtt": [
+                              "createmodelinputtablenodefnA305B4C1",
+                              "Arn"
+                            ]
+                          },
+                          "\",\"Payload\":{\"node_name\":\"create_model_input_table_node\"}}}}}]},\"Group 3\":{\"Type\":\"Parallel\",\"Next\":\"Group 4\",\"Branches\":[{\"StartAt\":\"split-data-node\",\"States\":{\"split-data-node\":{\"End\":true,\"Retry\":[{\"ErrorEquals\":[\"Lambda.ServiceException\",\"Lambda.AWSLambdaException\",\"Lambda.SdkClientException\"],\"IntervalSeconds\":2,\"MaxAttempts\":6,\"BackoffRate\":2}],\"Type\":\"Task\",\"Resource\":\"arn:",
+                          {
+                            "Ref": "AWS::Partition"
+                          },
+                          ":states:::lambda:invoke\",\"Parameters\":{\"FunctionName\":\"",
+                          {
+                            "Fn::GetAtt": [
+                              "splitdatanodefn72E68B0B",
+                              "Arn"
+                            ]
+                          },
+                          "\",\"Payload\":{\"node_name\":\"split_data_node\"}}}}}]},\"Group 4\":{\"Type\":\"Parallel\",\"Next\":\"Group 5\",\"Branches\":[{\"StartAt\":\"train-model-node\",\"States\":{\"train-model-node\":{\"End\":true,\"Retry\":[{\"ErrorEquals\":[\"Lambda.ServiceException\",\"Lambda.AWSLambdaException\",\"Lambda.SdkClientException\"],\"IntervalSeconds\":2,\"MaxAttempts\":6,\"BackoffRate\":2}],\"Type\":\"Task\",\"Resource\":\"arn:",
+                          {
+                            "Ref": "AWS::Partition"
+                          },
+                          ":states:::lambda:invoke\",\"Parameters\":{\"FunctionName\":\"",
+                          {
+                            "Fn::GetAtt": [
+                              "trainmodelnodefnDD014D33",
+                              "Arn"
+                            ]
+                          },
+                          "\",\"Payload\":{\"node_name\":\"train_model_node\"}}}}}]},\"Group 5\":{\"Type\":\"Parallel\",\"End\":true,\"Branches\":[{\"StartAt\":\"evaluate-model-node\",\"States\":{\"evaluate-model-node\":{\"End\":true,\"Retry\":[{\"ErrorEquals\":[\"Lambda.ServiceException\",\"Lambda.AWSLambdaException\",\"Lambda.SdkClientException\"],\"IntervalSeconds\":2,\"MaxAttempts\":6,\"BackoffRate\":2}],\"Type\":\"Task\",\"Resource\":\"arn:",
+                          {
+                            "Ref": "AWS::Partition"
+                          },
+                          ":states:::lambda:invoke\",\"Parameters\":{\"FunctionName\":\"",
+                          {
+                            "Fn::GetAtt": [
+                              "evaluatemodelnodefn814A2826",
+                              "Arn"
+                            ]
+                          },
+                          "\",\"Payload\":{\"node_name\":\"evaluate_model_node\"}}}}}]}},\"TimeoutSeconds\":300}"
+                        ]
+                      ]
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-stepfunctions.CfnStateMachine",
+                  "version": "1.140.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-stepfunctions.StateMachine",
+              "version": "1.140.0"
+            }
+          },
+          "CDKMetadata": {
+            "id": "CDKMetadata",
+            "path": "KedroStepFunctionsStack/CDKMetadata",
+            "children": {
+              "Default": {
+                "id": "Default",
+                "path": "KedroStepFunctionsStack/CDKMetadata/Default",
+                "constructInfo": {
+                  "fqn": "@aws-cdk/core.CfnResource",
+                  "version": "1.140.0"
+                }
+              },
+              "Condition": {
+                "id": "Condition",
+                "path": "KedroStepFunctionsStack/CDKMetadata/Condition",
+                "constructInfo": {
+                  "fqn": "@aws-cdk/core.CfnCondition",
+                  "version": "1.140.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/core.Construct",
+              "version": "1.140.0"
+            }
+          },
+          "Service-principalMap": {
+            "id": "Service-principalMap",
+            "path": "KedroStepFunctionsStack/Service-principalMap",
+            "constructInfo": {
+              "fqn": "@aws-cdk/core.CfnMapping",
+              "version": "1.140.0"
+            }
+          }
+        },
+        "constructInfo": {
+          "fqn": "@aws-cdk/core.Stack",
+          "version": "1.140.0"
+        }
+      }
+    },
+    "constructInfo": {
+      "fqn": "@aws-cdk/core.App",
+      "version": "1.140.0"
+    }
+  }
+}
