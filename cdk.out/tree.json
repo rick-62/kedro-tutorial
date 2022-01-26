@@ -42,7 +42,7 @@
                 "attributes": {
                   "aws:cdk:cloudformation:type": "AWS::S3::Bucket",
                   "aws:cdk:cloudformation:props": {
-                    "bucketName": "spaceflights-step-functions"
+                    "bucketName": "spaceflights-step-functions-ro62"
                   }
                 },
                 "constructInfo": {
@@ -69,186 +69,6 @@
             "path": "KedroStepFunctionsStack/Group 1",
             "constructInfo": {
               "fqn": "@aws-cdk/aws-stepfunctions.Parallel",
-              "version": "1.140.0"
-            }
-          },
-          "preprocess-shuttles-node-fn": {
-            "id": "preprocess-shuttles-node-fn",
-            "path": "KedroStepFunctionsStack/preprocess-shuttles-node-fn",
-            "children": {
-              "ServiceRole": {
-                "id": "ServiceRole",
-                "path": "KedroStepFunctionsStack/preprocess-shuttles-node-fn/ServiceRole",
-                "children": {
-                  "Resource": {
-                    "id": "Resource",
-                    "path": "KedroStepFunctionsStack/preprocess-shuttles-node-fn/ServiceRole/Resource",
-                    "attributes": {
-                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
-                      "aws:cdk:cloudformation:props": {
-                        "assumeRolePolicyDocument": {
-                          "Statement": [
-                            {
-                              "Action": "sts:AssumeRole",
-                              "Effect": "Allow",
-                              "Principal": {
-                                "Service": "lambda.amazonaws.com"
-                              }
-                            }
-                          ],
-                          "Version": "2012-10-17"
-                        },
-                        "managedPolicyArns": [
-                          {
-                            "Fn::Join": [
-                              "",
-                              [
-                                "arn:",
-                                {
-                                  "Ref": "AWS::Partition"
-                                },
-                                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
-                              ]
-                            ]
-                          }
-                        ]
-                      }
-                    },
-                    "constructInfo": {
-                      "fqn": "@aws-cdk/aws-iam.CfnRole",
-                      "version": "1.140.0"
-                    }
-                  },
-                  "DefaultPolicy": {
-                    "id": "DefaultPolicy",
-                    "path": "KedroStepFunctionsStack/preprocess-shuttles-node-fn/ServiceRole/DefaultPolicy",
-                    "children": {
-                      "Resource": {
-                        "id": "Resource",
-                        "path": "KedroStepFunctionsStack/preprocess-shuttles-node-fn/ServiceRole/DefaultPolicy/Resource",
-                        "attributes": {
-                          "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
-                          "aws:cdk:cloudformation:props": {
-                            "policyDocument": {
-                              "Statement": [
-                                {
-                                  "Action": [
-                                    "s3:GetObject*",
-                                    "s3:GetBucket*",
-                                    "s3:List*",
-                                    "s3:DeleteObject*",
-                                    "s3:PutObject*",
-                                    "s3:Abort*"
-                                  ],
-                                  "Effect": "Allow",
-                                  "Resource": [
-                                    {
-                                      "Fn::GetAtt": [
-                                        "RawDataBucket57F26C03",
-                                        "Arn"
-                                      ]
-                                    },
-                                    {
-                                      "Fn::Join": [
-                                        "",
-                                        [
-                                          {
-                                            "Fn::GetAtt": [
-                                              "RawDataBucket57F26C03",
-                                              "Arn"
-                                            ]
-                                          },
-                                          "/*"
-                                        ]
-                                      ]
-                                    }
-                                  ]
-                                }
-                              ],
-                              "Version": "2012-10-17"
-                            },
-                            "policyName": "preprocessshuttlesnodefnServiceRoleDefaultPolicy5C917868",
-                            "roles": [
-                              {
-                                "Ref": "preprocessshuttlesnodefnServiceRole33C9193F"
-                              }
-                            ]
-                          }
-                        },
-                        "constructInfo": {
-                          "fqn": "@aws-cdk/aws-iam.CfnPolicy",
-                          "version": "1.140.0"
-                        }
-                      }
-                    },
-                    "constructInfo": {
-                      "fqn": "@aws-cdk/aws-iam.Policy",
-                      "version": "1.140.0"
-                    }
-                  }
-                },
-                "constructInfo": {
-                  "fqn": "@aws-cdk/aws-iam.Role",
-                  "version": "1.140.0"
-                }
-              },
-              "Resource": {
-                "id": "Resource",
-                "path": "KedroStepFunctionsStack/preprocess-shuttles-node-fn/Resource",
-                "attributes": {
-                  "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
-                  "aws:cdk:cloudformation:props": {
-                    "code": {
-                      "imageUri": {
-                        "Fn::Join": [
-                          "",
-                          [
-                            {
-                              "Ref": "AWS::AccountId"
-                            },
-                            ".dkr.ecr.",
-                            {
-                              "Ref": "AWS::Region"
-                            },
-                            ".",
-                            {
-                              "Ref": "AWS::URLSuffix"
-                            },
-                            "/kedro-tutorial-17:latest"
-                          ]
-                        ]
-                      }
-                    },
-                    "role": {
-                      "Fn::GetAtt": [
-                        "preprocessshuttlesnodefnServiceRole33C9193F",
-                        "Arn"
-                      ]
-                    },
-                    "description": "preprocess_shuttles_node: preprocess_shuttles([shuttles]) -> [preprocessed_shuttles]",
-                    "functionName": "preprocess-shuttles-node",
-                    "memorySize": 256,
-                    "packageType": "Image",
-                    "reservedConcurrentExecutions": 10,
-                    "timeout": 900
-                  }
-                },
-                "constructInfo": {
-                  "fqn": "@aws-cdk/aws-lambda.CfnFunction",
-                  "version": "1.140.0"
-                }
-              }
-            },
-            "constructInfo": {
-              "fqn": "@aws-cdk/aws-lambda.Function",
-              "version": "1.140.0"
-            }
-          },
-          "preprocess-shuttles-node": {
-            "id": "preprocess-shuttles-node",
-            "path": "KedroStepFunctionsStack/preprocess-shuttles-node",
-            "constructInfo": {
-              "fqn": "@aws-cdk/aws-stepfunctions-tasks.LambdaInvoke",
               "version": "1.140.0"
             }
           },
@@ -394,7 +214,7 @@
                             {
                               "Ref": "AWS::URLSuffix"
                             },
-                            "/kedro-tutorial-17:latest"
+                            "/spaceflights-step-functions:latest"
                           ]
                         ]
                       }
@@ -427,6 +247,186 @@
           "preprocess-companies-node": {
             "id": "preprocess-companies-node",
             "path": "KedroStepFunctionsStack/preprocess-companies-node",
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-stepfunctions-tasks.LambdaInvoke",
+              "version": "1.140.0"
+            }
+          },
+          "preprocess-shuttles-node-fn": {
+            "id": "preprocess-shuttles-node-fn",
+            "path": "KedroStepFunctionsStack/preprocess-shuttles-node-fn",
+            "children": {
+              "ServiceRole": {
+                "id": "ServiceRole",
+                "path": "KedroStepFunctionsStack/preprocess-shuttles-node-fn/ServiceRole",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "KedroStepFunctionsStack/preprocess-shuttles-node-fn/ServiceRole/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "lambda.amazonaws.com"
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "managedPolicyArns": [
+                          {
+                            "Fn::Join": [
+                              "",
+                              [
+                                "arn:",
+                                {
+                                  "Ref": "AWS::Partition"
+                                },
+                                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+                              ]
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-iam.CfnRole",
+                      "version": "1.140.0"
+                    }
+                  },
+                  "DefaultPolicy": {
+                    "id": "DefaultPolicy",
+                    "path": "KedroStepFunctionsStack/preprocess-shuttles-node-fn/ServiceRole/DefaultPolicy",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "KedroStepFunctionsStack/preprocess-shuttles-node-fn/ServiceRole/DefaultPolicy/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                          "aws:cdk:cloudformation:props": {
+                            "policyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": [
+                                    "s3:GetObject*",
+                                    "s3:GetBucket*",
+                                    "s3:List*",
+                                    "s3:DeleteObject*",
+                                    "s3:PutObject*",
+                                    "s3:Abort*"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::GetAtt": [
+                                        "RawDataBucket57F26C03",
+                                        "Arn"
+                                      ]
+                                    },
+                                    {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          {
+                                            "Fn::GetAtt": [
+                                              "RawDataBucket57F26C03",
+                                              "Arn"
+                                            ]
+                                          },
+                                          "/*"
+                                        ]
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            },
+                            "policyName": "preprocessshuttlesnodefnServiceRoleDefaultPolicy5C917868",
+                            "roles": [
+                              {
+                                "Ref": "preprocessshuttlesnodefnServiceRole33C9193F"
+                              }
+                            ]
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/aws-iam.CfnPolicy",
+                          "version": "1.140.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-iam.Policy",
+                      "version": "1.140.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-iam.Role",
+                  "version": "1.140.0"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "KedroStepFunctionsStack/preprocess-shuttles-node-fn/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
+                  "aws:cdk:cloudformation:props": {
+                    "code": {
+                      "imageUri": {
+                        "Fn::Join": [
+                          "",
+                          [
+                            {
+                              "Ref": "AWS::AccountId"
+                            },
+                            ".dkr.ecr.",
+                            {
+                              "Ref": "AWS::Region"
+                            },
+                            ".",
+                            {
+                              "Ref": "AWS::URLSuffix"
+                            },
+                            "/spaceflights-step-functions:latest"
+                          ]
+                        ]
+                      }
+                    },
+                    "role": {
+                      "Fn::GetAtt": [
+                        "preprocessshuttlesnodefnServiceRole33C9193F",
+                        "Arn"
+                      ]
+                    },
+                    "description": "preprocess_shuttles_node: preprocess_shuttles([shuttles]) -> [preprocessed_shuttles]",
+                    "functionName": "preprocess-shuttles-node",
+                    "memorySize": 256,
+                    "packageType": "Image",
+                    "reservedConcurrentExecutions": 10,
+                    "timeout": 900
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-lambda.CfnFunction",
+                  "version": "1.140.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-lambda.Function",
+              "version": "1.140.0"
+            }
+          },
+          "preprocess-shuttles-node": {
+            "id": "preprocess-shuttles-node",
+            "path": "KedroStepFunctionsStack/preprocess-shuttles-node",
             "constructInfo": {
               "fqn": "@aws-cdk/aws-stepfunctions-tasks.LambdaInvoke",
               "version": "1.140.0"
@@ -582,7 +582,7 @@
                             {
                               "Ref": "AWS::URLSuffix"
                             },
-                            "/kedro-tutorial-17:latest"
+                            "/spaceflights-step-functions:latest"
                           ]
                         ]
                       }
@@ -770,7 +770,7 @@
                             {
                               "Ref": "AWS::URLSuffix"
                             },
-                            "/kedro-tutorial-17:latest"
+                            "/spaceflights-step-functions:latest"
                           ]
                         ]
                       }
@@ -958,7 +958,7 @@
                             {
                               "Ref": "AWS::URLSuffix"
                             },
-                            "/kedro-tutorial-17:latest"
+                            "/spaceflights-step-functions:latest"
                           ]
                         ]
                       }
@@ -1146,7 +1146,7 @@
                             {
                               "Ref": "AWS::URLSuffix"
                             },
-                            "/kedro-tutorial-17:latest"
+                            "/spaceflights-step-functions:latest"
                           ]
                         ]
                       }
@@ -1282,7 +1282,7 @@
                                   "Effect": "Allow",
                                   "Resource": {
                                     "Fn::GetAtt": [
-                                      "preprocessshuttlesnodefn33B2C627",
+                                      "preprocesscompaniesnodefn6AA50645",
                                       "Arn"
                                     ]
                                   }
@@ -1292,7 +1292,7 @@
                                   "Effect": "Allow",
                                   "Resource": {
                                     "Fn::GetAtt": [
-                                      "preprocesscompaniesnodefn6AA50645",
+                                      "preprocessshuttlesnodefn33B2C627",
                                       "Arn"
                                     ]
                                   }
@@ -1341,18 +1341,7 @@
                       "Fn::Join": [
                         "",
                         [
-                          "{\"StartAt\":\"Start\",\"States\":{\"Start\":{\"Type\":\"Pass\",\"Next\":\"Group 1\"},\"Group 1\":{\"Type\":\"Parallel\",\"Next\":\"Group 2\",\"Branches\":[{\"StartAt\":\"preprocess-shuttles-node\",\"States\":{\"preprocess-shuttles-node\":{\"End\":true,\"Retry\":[{\"ErrorEquals\":[\"Lambda.ServiceException\",\"Lambda.AWSLambdaException\",\"Lambda.SdkClientException\"],\"IntervalSeconds\":2,\"MaxAttempts\":6,\"BackoffRate\":2}],\"Type\":\"Task\",\"Resource\":\"arn:",
-                          {
-                            "Ref": "AWS::Partition"
-                          },
-                          ":states:::lambda:invoke\",\"Parameters\":{\"FunctionName\":\"",
-                          {
-                            "Fn::GetAtt": [
-                              "preprocessshuttlesnodefn33B2C627",
-                              "Arn"
-                            ]
-                          },
-                          "\",\"Payload\":{\"node_name\":\"preprocess_shuttles_node\"}}}}},{\"StartAt\":\"preprocess-companies-node\",\"States\":{\"preprocess-companies-node\":{\"End\":true,\"Retry\":[{\"ErrorEquals\":[\"Lambda.ServiceException\",\"Lambda.AWSLambdaException\",\"Lambda.SdkClientException\"],\"IntervalSeconds\":2,\"MaxAttempts\":6,\"BackoffRate\":2}],\"Type\":\"Task\",\"Resource\":\"arn:",
+                          "{\"StartAt\":\"Start\",\"States\":{\"Start\":{\"Type\":\"Pass\",\"Next\":\"Group 1\"},\"Group 1\":{\"Type\":\"Parallel\",\"Next\":\"Group 2\",\"Branches\":[{\"StartAt\":\"preprocess-companies-node\",\"States\":{\"preprocess-companies-node\":{\"End\":true,\"Retry\":[{\"ErrorEquals\":[\"Lambda.ServiceException\",\"Lambda.AWSLambdaException\",\"Lambda.SdkClientException\"],\"IntervalSeconds\":2,\"MaxAttempts\":6,\"BackoffRate\":2}],\"Type\":\"Task\",\"Resource\":\"arn:",
                           {
                             "Ref": "AWS::Partition"
                           },
@@ -1363,7 +1352,18 @@
                               "Arn"
                             ]
                           },
-                          "\",\"Payload\":{\"node_name\":\"preprocess_companies_node\"}}}}}]},\"Group 2\":{\"Type\":\"Parallel\",\"Next\":\"Group 3\",\"Branches\":[{\"StartAt\":\"create-model-input-table-node\",\"States\":{\"create-model-input-table-node\":{\"End\":true,\"Retry\":[{\"ErrorEquals\":[\"Lambda.ServiceException\",\"Lambda.AWSLambdaException\",\"Lambda.SdkClientException\"],\"IntervalSeconds\":2,\"MaxAttempts\":6,\"BackoffRate\":2}],\"Type\":\"Task\",\"Resource\":\"arn:",
+                          "\",\"Payload\":{\"node_name\":\"preprocess_companies_node\"}}}}},{\"StartAt\":\"preprocess-shuttles-node\",\"States\":{\"preprocess-shuttles-node\":{\"End\":true,\"Retry\":[{\"ErrorEquals\":[\"Lambda.ServiceException\",\"Lambda.AWSLambdaException\",\"Lambda.SdkClientException\"],\"IntervalSeconds\":2,\"MaxAttempts\":6,\"BackoffRate\":2}],\"Type\":\"Task\",\"Resource\":\"arn:",
+                          {
+                            "Ref": "AWS::Partition"
+                          },
+                          ":states:::lambda:invoke\",\"Parameters\":{\"FunctionName\":\"",
+                          {
+                            "Fn::GetAtt": [
+                              "preprocessshuttlesnodefn33B2C627",
+                              "Arn"
+                            ]
+                          },
+                          "\",\"Payload\":{\"node_name\":\"preprocess_shuttles_node\"}}}}}]},\"Group 2\":{\"Type\":\"Parallel\",\"Next\":\"Group 3\",\"Branches\":[{\"StartAt\":\"create-model-input-table-node\",\"States\":{\"create-model-input-table-node\":{\"End\":true,\"Retry\":[{\"ErrorEquals\":[\"Lambda.ServiceException\",\"Lambda.AWSLambdaException\",\"Lambda.SdkClientException\"],\"IntervalSeconds\":2,\"MaxAttempts\":6,\"BackoffRate\":2}],\"Type\":\"Task\",\"Resource\":\"arn:",
                           {
                             "Ref": "AWS::Partition"
                           },

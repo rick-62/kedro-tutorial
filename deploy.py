@@ -28,7 +28,7 @@ class KedroStepFunctionsStack(core.Stack):
     project_path = Path.cwd()
     erc_repository_name = project_path.name
     s3_data_bucket_name = (
-        "spaceflights-step-functions"  # this is where the raw data is located
+        "spaceflights-step-functions-ro62"  # this is where the raw data is located
     )
 
     def __init__(self, scope: core.Construct, id: str, **kwargs) -> None:
